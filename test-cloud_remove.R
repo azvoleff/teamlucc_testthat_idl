@@ -12,25 +12,34 @@ test_that("input data is correct", {
 })
 
 # Approx 97 second run time
-out_idl_byblock <- cloud_remove(cloudy, clear, cloud_mask)
+out_idl_byblock <- cloud_remove(cloudy, clear, cloud_mask, 
+                                algorithm="CLOUD_REMOVE")
 # Approx 97 second run time
-out_idl <- cloud_remove(cloudy, clear, cloud_mask, byblock=FALSE)
+out_idl <- cloud_remove(cloudy, clear, cloud_mask, algorithm="CLOUD_REMOVE", 
+                        byblock=FALSE)
 
 # Approx 17 second run time
-out_idl_fast_byblock <- cloud_remove(cloudy, clear, cloud_mask, fast=TRUE)
+out_idl_fast_byblock <- cloud_remove(cloudy, clear, cloud_mask, 
+                                     algorithm="CLOUD_REMOVE_FAST")
 # Approx 17 second run time
-out_idl_fast <- cloud_remove(cloudy, clear, cloud_mask, fast=TRUE, 
-                             byblock=FALSE)
+out_idl_fast <- cloud_remove(cloudy, clear, cloud_mask, 
+                             algorithm="CLOUD_REMOVE_FAST", byblock=FALSE)
 
 # Approx 22 second run time
-out_r_byblock <- cloud_remove(cloudy, clear, cloud_mask, use_IDL=FALSE)
+out_teamlucc_byblock <- cloud_remove(cloudy, clear, cloud_mask, algorithm="teamlucc")
 # Approx 22 second run time
-out_r <- cloud_remove(cloudy, clear, cloud_mask, use_IDL=FALSE, byblock=FALSE)
+out_teamlucc <- cloud_remove(cloudy, clear, cloud_mask, algorithm="teamlucc", byblock=FALSE)
+
+# Approx 3 second run time
+out_simple_byblock <- cloud_remove(cloudy, clear, cloud_mask, algorithm="simple")
+# Approx 3 second run time
+out_simple <- cloud_remove(cloudy, clear, cloud_mask, algorithm="simple", byblock=FALSE)
 
 test_that("byblock=FALSE and byblock=TRUE match for RasterLayers", {
     expect_equivalent(getValues(out_idl), getValues(out_idl_byblock))
     expect_equivalent(getValues(out_idl_fast), getValues(out_idl_fast_byblock))
-    expect_equivalent(getValues(out_r), getValues(out_r_byblock))
+    expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_byblock))
+    expect_equivalent(getValues(out_simple), getValues(out_simple_byblock))
 })
 
 test_that("IDL cloud fill works correctly for RasterLayers", {
@@ -41,26 +50,39 @@ test_that("IDL cloud fill works correctly for RasterLayers", {
 })
 
 test_that("R cloud fill works correctly for RasterLayers", {
-    expect_less_than(abs(mean(getValues(out_r) - getValues(filled_ref))), .11)
+    expect_less_than(abs(mean(getValues(out_teamlucc) - getValues(filled_ref))), .11)
+    expect_less_than(abs(mean(getValues(out_simple) - getValues(filled_ref))), .05)
 })
 
 # Test code works when using out_names
 out_idl_outname <- cloud_remove(cloudy, clear, cloud_mask, 
+                                algorithm="CLOUD_REMOVE",
                                 out_name=rasterTmpFile())
-out_idl_fast_outname <- cloud_remove(cloudy, clear, cloud_mask, fast=TRUE, 
+out_idl_fast_outname <- cloud_remove(cloudy, clear, cloud_mask,
+                                     algorithm="CLOUD_REMOVE_FAST",
                                      out_name=rasterTmpFile())
 # Code for cloud_remove_R also needs to test outnames with and without byblock 
 # (not tested above as this code doesn't vary for cloud_remove_IDL).
-out_r_outname_byblock <- cloud_remove(cloudy, clear, cloud_mask, use_IDL=FALSE, 
+out_teamlucc_outname_byblock <- cloud_remove(cloudy, clear, cloud_mask,
+                                      algorithm="teamlucc",
                                       out_name=rasterTmpFile())
-out_r_outname <- cloud_remove(cloudy, clear, cloud_mask, use_IDL=FALSE, 
-                              byblock=FALSE, out_name=rasterTmpFile())
+out_teamlucc_outname <- cloud_remove(cloudy, clear, cloud_mask,
+                              algorithm="teamlucc", byblock=FALSE, 
+                              out_name=rasterTmpFile())
+out_simple_outname_byblock <- cloud_remove(cloudy, clear, cloud_mask,
+                                           algorithm="simple", 
+                                           out_name=rasterTmpFile())
+out_simple_outname <- cloud_remove(cloudy, clear, cloud_mask, 
+                                   algorithm="simple", byblock=FALSE, 
+                                   out_name=rasterTmpFile())
 
 test_that("cloud_remove works when out_name is specified", {
     expect_equivalent(getValues(out_idl), getValues(out_idl_outname))
     expect_equivalent(getValues(out_idl_fast), getValues(out_idl_fast_outname))
-    expect_equivalent(getValues(out_r), getValues(out_r_outname))
-    expect_equivalent(getValues(out_r), getValues(out_r_byblock))
+    expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_outname))
+    expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_outname_byblock))
+    expect_equivalent(getValues(out_simple), getValues(out_simple_outname))
+    expect_equivalent(getValues(out_simple), getValues(out_simple_outname_byblock))
 })
 
 ###############################################################################
@@ -71,24 +93,32 @@ clear_stack <- stack(clear, clear, clear)
 filled_ref_stack <- stack(filled_ref, filled_ref, filled_ref)
 
 # Approx 150 second run time
-out_idl_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask)
+out_idl_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
+                                      algorithm="CLOUD_REMOVE")
 # Approx 150 second run time
 out_idl_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                              byblock=FALSE)
+                              algorithm="CLOUD_REMOVE", byblock=FALSE)
 
 # Approx 30 second run time
 out_idl_stack_fast_byblock <- cloud_remove(cloudy_stack, clear_stack, 
-                                           cloud_mask, fast=TRUE)
+                                           cloud_mask, 
+                                           algorithm="CLOUD_REMOVE_FAST")
 # Approx 30 second run time
 out_idl_stack_fast <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                                   fast=TRUE, byblock=FALSE)
+                                   algorithm="CLOUD_REMOVE_FAST", 
+                                   byblock=FALSE)
 
 # Approx 30 second run time
-out_r_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                                    use_IDL=FALSE)
+out_teamlucc_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
+                                    algorithm="teamlucc")
 # Approx 30 second run time
-out_r_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                            use_IDL=FALSE, byblock=FALSE)
+out_teamlucc_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
+                            algorithm="teamlucc", byblock=FALSE)
+
+# Approx 5 second run time
+out_simple_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, algorithm="simple")
+# Approx 5 second run time
+out_simple_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, algorithm="simple", byblock=FALSE)
 
 test_that("IDL cloud fill works correctly for RasterStack", {
     # IDL
@@ -108,16 +138,23 @@ test_that("IDL cloud fill works correctly for RasterStack", {
 })
 
 test_that("R cloud fill works correctly for RasterStack", {
-    expect_less_than(abs(mean(getValues(out_r_stack[[1]]) - 
+    expect_less_than(abs(mean(getValues(out_teamlucc_stack[[1]]) - 
                               getValues(filled_ref_stack[[1]]))), .11)
-    expect_less_than(abs(mean(getValues(out_r_stack[[2]]) - 
+    expect_less_than(abs(mean(getValues(out_teamlucc_stack[[2]]) - 
                               getValues(filled_ref_stack[[2]]))), .11)
-    expect_less_than(abs(mean(getValues(out_r_stack[[3]]) - 
+    expect_less_than(abs(mean(getValues(out_teamlucc_stack[[3]]) - 
                               getValues(filled_ref_stack[[3]]))), .11)
+    expect_less_than(abs(mean(getValues(out_simple_stack[[1]]) - 
+                              getValues(filled_ref_stack[[1]]))), .05)
+    expect_less_than(abs(mean(getValues(out_simple_stack[[2]]) - 
+                              getValues(filled_ref_stack[[2]]))), .05)
+    expect_less_than(abs(mean(getValues(out_simple_stack[[3]]) - 
+                              getValues(filled_ref_stack[[3]]))), .05)
 })
 
 test_that("byblock=FALSE and byblock=TRUE match for RasterStacks", {
     expect_equivalent(out_idl_stack, out_idl_stack_byblock)
     expect_equivalent(out_idl_stack_fast, out_idl_stack_fast_byblock)
-    expect_equivalent(out_r_stack, out_r_stack_byblock)
+    expect_equivalent(out_teamlucc_stack, out_teamlucc_stack_byblock)
+    expect_equivalent(out_simple_stack, out_simple_stack_byblock)
 })

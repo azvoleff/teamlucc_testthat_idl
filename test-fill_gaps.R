@@ -28,7 +28,7 @@ filled_with_timeseries_out_base <- fill_gaps(slc_off, fill,
 
 test_that("gap fill works properly", {
     expect_less_than(abs(mean(getValues(filled_no_timeseries$filled) - getValues(filled_ref))), 1e-4)
-    expect_less_than(abs(mean(getValues(filled_with_timeseries$filled) - getValues(filled_ref))), 1e-5)
+    expect_less_than(abs(mean(getValues(filled_with_timeseries$filled) - getValues(filled_ref))), 1e-4)
 })
 
 test_that("gap fill uncertainty works properly", {
@@ -39,12 +39,12 @@ test_that("gap fill uncertainty works properly", {
 })
 
 test_that("gap fill works with out_base specified", {
-    expect_equivalent(filled_no_timeseries$filled, 
-                      filled_no_timeseries_out_base$filled)
-    expect_equivalent(filled_no_timeseries$uncertainty, 
-                      filled_no_timeseries_out_base$uncertainty)
-    expect_equivalent(filled_with_timeseries$filled, 
-                      filled_with_timeseries_out_base$filled)
-    expect_equivalent(filled_with_timeseries$uncertainty, 
-                      filled_with_timeseries_out_base$uncertainty)
+    expect_equivalent(getValues(filled_no_timeseries$filled), 
+                      getValues(filled_no_timeseries_out_base$filled))
+    expect_equivalent(getValues(filled_no_timeseries$uncertainty), 
+                      getValues(filled_no_timeseries_out_base$uncertainty))
+    expect_equivalent(getValues(filled_with_timeseries$filled), 
+                      getValues(filled_with_timeseries_out_base$filled))
+    expect_equivalent(getValues(filled_with_timeseries$uncertainty), 
+                      getValues(filled_with_timeseries_out_base$uncertainty))
 })
