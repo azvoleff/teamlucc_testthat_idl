@@ -32,4 +32,5 @@ test_dir(file.path(teamlucc_dir, "tests", "testthat_idl"))
 ```
 
 Be sure to replace `teamlucc_dir` with the appropriate path to the `teamlucc` 
-folder on your machine.
+folder on your machine. Depending on the speed of your machine, these tests can 
+take up to several hours to run.
