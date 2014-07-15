@@ -9,14 +9,13 @@ also require relatively large data files, they are not located in the main
 license, and want to fully test the `teamlucc` package, or if you want access 
 to the sample data included here.
 
-To run these tests, first [download the latest version of the `teamlucc` 
-package](https://github.com/azvoleff/teamlucc/archive/master.zip). Unzip the  
-`teamlucc` zipfile into a folder on your computer. (on a Windows machine, for 
-example, this might be `C:\Users\azvoleff\Desktop\teamlucc`). Then [download 
-the 
+To run these tests, download and  unzip [the latest version of the `teamlucc` 
+package](https://github.com/azvoleff/teamlucc/archive/master.zip)
+into a folder on your computer (on a Windows machine, for example, this might 
+be `C:\Users\azvoleff\Desktop\teamlucc`). Then download [the IDL 
 tests](https://github.com/azvoleff/teamlucc_testthat_idl/archive/master.zip), 
-and unzip the tests into `tests\testthat_idl` within the `teamlucc` directory 
-(for example `C:\Users\azvoleff\Desktop\teamlucc\tests\testthat_idl`).
+and unzip them into `tests\testthat_idl` within the `teamlucc` directory (for 
+example `C:\Users\azvoleff\Desktop\teamlucc\tests\testthat_idl`).
 
 **NOTE: If you are installing on Windows, you will need to install the  
 appropriate version of [Rtools](http://cran.r-project.org/bin/windows/Rtools/) 
