@@ -17,7 +17,7 @@ tests](https://github.com/azvoleff/teamlucc_testthat_idl/archive/master.zip),
 and unzip them into `tests\testthat_idl` within the `teamlucc` directory (for 
 example `C:\Users\azvoleff\Desktop\teamlucc\tests\testthat_idl`).
 
-**NOTE: If you are installing on Windows, you will need to install the  
+**NOTE: If you are installing on Windows, you will need to install the
 appropriate version of [Rtools](http://cran.r-project.org/bin/windows/Rtools/) 
 for your version of R (as `teamlucc` contains C++ code) before you follow the 
 below steps.**
