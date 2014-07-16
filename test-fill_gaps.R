@@ -26,25 +26,29 @@ filled_with_timeseries_out_base <- fill_gaps(slc_off, fill,
                                              timeseries=timeseries, 
                                              out_base=rasterTmpFile())
 
+# Samples used to estimate the semivariogram are selected randomly, so repeated 
+# fills will not match exactly, hence the tolerances in the below comparisons
 test_that("gap fill works properly", {
-    expect_less_than(abs(mean(getValues(filled_no_timeseries$filled) - getValues(filled_ref))), 1e-4)
-    expect_less_than(abs(mean(getValues(filled_with_timeseries$filled) - getValues(filled_ref))), 1e-4)
+    expect_less_than(abs(mean(getValues(filled_no_timeseries$filled) - 
+                              getValues(filled_ref))), 1e-4)
+    expect_less_than(abs(mean(getValues(filled_with_timeseries$filled) - 
+                              getValues(filled_ref))), 1e-4)
 })
 
 test_that("gap fill uncertainty works properly", {
     expect_less_than(abs(mean(getValues(filled_no_timeseries$uncertainty) - 
-                              getValues(filled_ref_uncertainty))), 1.07)
+                              getValues(filled_ref_uncertainty))), 1.5)
     expect_less_than(abs(mean(getValues(filled_with_timeseries$uncertainty) - 
-                              getValues(filled_ref_uncertainty))), .8)
+                              getValues(filled_ref_uncertainty))), 1.5)
 })
 
 test_that("gap fill works with out_base specified", {
-    expect_equivalent(getValues(filled_no_timeseries$filled), 
-                      getValues(filled_no_timeseries_out_base$filled))
-    expect_equivalent(getValues(filled_no_timeseries$uncertainty), 
-                      getValues(filled_no_timeseries_out_base$uncertainty))
-    expect_equivalent(getValues(filled_with_timeseries$filled), 
-                      getValues(filled_with_timeseries_out_base$filled))
-    expect_equivalent(getValues(filled_with_timeseries$uncertainty), 
-                      getValues(filled_with_timeseries_out_base$uncertainty))
+    expect_less_than(abs(mean(getValues(filled_no_timeseries$filled) -
+                     getValues(filled_no_timeseries_out_base$filled))), 1e-4)
+    expect_less_than(abs(mean(getValues(filled_no_timeseries$uncertainty) - 
+                     getValues(filled_no_timeseries_out_base$uncertainty))), 1.5)
+    expect_less_than(abs(mean(getValues(filled_with_timeseries$filled) -
+                     getValues(filled_with_timeseries_out_base$filled))), 1e-4)
+    expect_less_than(abs(mean(getValues(filled_with_timeseries$uncertainty) -
+                     getValues(filled_with_timeseries_out_base$uncertainty))), 1.5)
 })
