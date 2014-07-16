@@ -38,8 +38,10 @@ out_simple <- cloud_remove(cloudy, clear, cloud_mask, algorithm="simple", bybloc
 test_that("byblock=FALSE and byblock=TRUE match for RasterLayers", {
     expect_equivalent(getValues(out_idl), getValues(out_idl_byblock))
     expect_equivalent(getValues(out_idl_fast), getValues(out_idl_fast_byblock))
-    expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_byblock))
-    expect_equivalent(getValues(out_simple), getValues(out_simple_byblock))
+    expect_equal(getValues(out_teamlucc), getValues(out_teamlucc_byblock), 
+                 tolerance=.05)
+    expect_equal(getValues(out_simple), getValues(out_simple_byblock), 
+                 tolerance=.02)
 })
 
 test_that("IDL cloud fill works correctly for RasterLayers", {
@@ -50,7 +52,7 @@ test_that("IDL cloud fill works correctly for RasterLayers", {
 })
 
 test_that("R cloud fill works correctly for RasterLayers", {
-    expect_less_than(abs(mean(getValues(out_teamlucc) - getValues(filled_ref))), .11)
+    expect_less_than(abs(mean(getValues(out_teamlucc) - getValues(filled_ref))), .12)
     expect_less_than(abs(mean(getValues(out_simple) - getValues(filled_ref))), .05)
 })
 
@@ -80,9 +82,11 @@ test_that("cloud_remove works when out_name is specified", {
     expect_equivalent(getValues(out_idl), getValues(out_idl_outname))
     expect_equivalent(getValues(out_idl_fast), getValues(out_idl_fast_outname))
     expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_outname))
-    expect_equivalent(getValues(out_teamlucc), getValues(out_teamlucc_outname_byblock))
+    expect_equal(getValues(out_teamlucc), 
+                 getValues(out_teamlucc_outname_byblock), tolerance=.05)
     expect_equivalent(getValues(out_simple), getValues(out_simple_outname))
-    expect_equivalent(getValues(out_simple), getValues(out_simple_outname_byblock))
+    expect_equal(getValues(out_simple), 
+                 getValues(out_simple_outname_byblock), tolerance=.02)
 })
 
 ###############################################################################
@@ -139,11 +143,11 @@ test_that("IDL cloud fill works correctly for RasterStack", {
 
 test_that("R cloud fill works correctly for RasterStack", {
     expect_less_than(abs(mean(getValues(out_teamlucc_stack[[1]]) - 
-                              getValues(filled_ref_stack[[1]]))), .11)
+                              getValues(filled_ref_stack[[1]]))), .12)
     expect_less_than(abs(mean(getValues(out_teamlucc_stack[[2]]) - 
-                              getValues(filled_ref_stack[[2]]))), .11)
+                              getValues(filled_ref_stack[[2]]))), .12)
     expect_less_than(abs(mean(getValues(out_teamlucc_stack[[3]]) - 
-                              getValues(filled_ref_stack[[3]]))), .11)
+                              getValues(filled_ref_stack[[3]]))), .12)
     expect_less_than(abs(mean(getValues(out_simple_stack[[1]]) - 
                               getValues(filled_ref_stack[[1]]))), .05)
     expect_less_than(abs(mean(getValues(out_simple_stack[[2]]) - 
