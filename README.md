@@ -27,6 +27,7 @@ Now, in R, run:
 ```R
 teamlucc_dir <- "C:/Users/azvoleff/Desktop/teamlucc"
 library(devtools)
+library(testthat)
 load_all(teamlucc_dir)
 test_dir(file.path(teamlucc_dir, "tests", "testthat_idl"))
 ```
