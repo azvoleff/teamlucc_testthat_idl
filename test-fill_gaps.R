@@ -1,5 +1,7 @@
 context("fill_gaps")
 
+if (!exists("idl")) idl <- "C:/Program Files/Exelis/IDL83/bin/bin.x86_64/idl.exe"
+
 slc_off <- brick('fill_gaps/TM20100429_toaR_gap')
 fill <- brick('fill_gaps/TM20100515_toaR')
 timeseries <- c(brick('fill_gaps/TM20100208_toaR'))
@@ -14,17 +16,18 @@ test_that("input data is correct", {
 })
 
 # Approx 165 seconds
-filled_no_timeseries <- fill_gaps(slc_off, fill, timeseries=c())
+filled_no_timeseries <- fill_gaps(slc_off, fill, timeseries=c(), idl=idl)
 # Approx 165 seconds
 filled_no_timeseries_out_base <- fill_gaps(slc_off, fill, timeseries=c(), 
-                                           out_base=rasterTmpFile())
+                                           out_base=rasterTmpFile(), idl=idl)
 
 # Approx 205 seconds
-filled_with_timeseries <- fill_gaps(slc_off, fill, timeseries=timeseries)
+filled_with_timeseries <- fill_gaps(slc_off, fill, timeseries=timeseries, 
+                                    idl=idl)
 # Approx 205 seconds
 filled_with_timeseries_out_base <- fill_gaps(slc_off, fill, 
                                              timeseries=timeseries, 
-                                             out_base=rasterTmpFile())
+                                             out_base=rasterTmpFile(), idl=idl)
 
 # Samples used to estimate the semivariogram are selected randomly, so repeated 
 # fills will not match exactly, hence the tolerances in the below comparisons
