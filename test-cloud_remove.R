@@ -1,5 +1,7 @@
 context("cloud_remove")
 
+if (!exists("idl")) idl <- "C:/Program Files/Exelis/IDL83/bin/bin.x86_64/idl.exe"
+
 cloudy <- raster('cloud_remove/L20080724_cloudy')
 clear <- raster('cloud_remove/L20080606')
 cloud_mask <- raster('cloud_remove/cloud_mask')
@@ -13,17 +15,18 @@ test_that("input data is correct", {
 
 # Approx 97 second run time
 out_idl_byblock <- cloud_remove(cloudy, clear, cloud_mask, 
-                                algorithm="CLOUD_REMOVE")
+                                algorithm="CLOUD_REMOVE", idl=idl)
 # Approx 97 second run time
 out_idl <- cloud_remove(cloudy, clear, cloud_mask, algorithm="CLOUD_REMOVE", 
-                        byblock=FALSE)
+                        byblock=FALSE, idl=idl)
 
 # Approx 17 second run time
 out_idl_fast_byblock <- cloud_remove(cloudy, clear, cloud_mask, 
-                                     algorithm="CLOUD_REMOVE_FAST")
+                                     algorithm="CLOUD_REMOVE_FAST", idl=idl)
 # Approx 17 second run time
 out_idl_fast <- cloud_remove(cloudy, clear, cloud_mask, 
-                             algorithm="CLOUD_REMOVE_FAST", byblock=FALSE)
+                             algorithm="CLOUD_REMOVE_FAST", byblock=FALSE, 
+                             idl=idl)
 
 # Approx 22 second run time
 out_teamlucc_byblock <- cloud_remove(cloudy, clear, cloud_mask, algorithm="teamlucc")
@@ -59,10 +62,10 @@ test_that("R cloud fill works correctly for RasterLayers", {
 # Test code works when using out_names
 out_idl_outname <- cloud_remove(cloudy, clear, cloud_mask, 
                                 algorithm="CLOUD_REMOVE",
-                                out_name=rasterTmpFile())
+                                out_name=rasterTmpFile(), idl=idl)
 out_idl_fast_outname <- cloud_remove(cloudy, clear, cloud_mask,
                                      algorithm="CLOUD_REMOVE_FAST",
-                                     out_name=rasterTmpFile())
+                                     out_name=rasterTmpFile(), idl=idl)
 # Code for cloud_remove_R also needs to test outnames with and without byblock 
 # (not tested above as this code doesn't vary for cloud_remove_IDL).
 out_teamlucc_outname_byblock <- cloud_remove(cloudy, clear, cloud_mask,
@@ -98,19 +101,20 @@ filled_ref_stack <- stack(filled_ref, filled_ref, filled_ref)
 
 # Approx 150 second run time
 out_idl_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                                      algorithm="CLOUD_REMOVE")
+                                      algorithm="CLOUD_REMOVE", idl=idl)
 # Approx 150 second run time
 out_idl_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
-                              algorithm="CLOUD_REMOVE", byblock=FALSE)
+                              algorithm="CLOUD_REMOVE", byblock=FALSE, idl=idl)
 
 # Approx 30 second run time
 out_idl_stack_fast_byblock <- cloud_remove(cloudy_stack, clear_stack, 
                                            cloud_mask, 
-                                           algorithm="CLOUD_REMOVE_FAST")
+                                           algorithm="CLOUD_REMOVE_FAST", 
+                                           idl=idl)
 # Approx 30 second run time
 out_idl_stack_fast <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
                                    algorithm="CLOUD_REMOVE_FAST", 
-                                   byblock=FALSE)
+                                   byblock=FALSE, idl=idl)
 
 # Approx 30 second run time
 out_teamlucc_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
@@ -120,9 +124,11 @@ out_teamlucc_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask,
                             algorithm="teamlucc", byblock=FALSE)
 
 # Approx 5 second run time
-out_simple_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, algorithm="simple")
+out_simple_stack_byblock <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
+                                         algorithm="simple")
 # Approx 5 second run time
-out_simple_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, algorithm="simple", byblock=FALSE)
+out_simple_stack <- cloud_remove(cloudy_stack, clear_stack, cloud_mask, 
+                                 algorithm="simple", byblock=FALSE)
 
 test_that("IDL cloud fill works correctly for RasterStack", {
     # IDL
