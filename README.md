@@ -35,3 +35,12 @@ test_dir(file.path(teamlucc_dir, "tests", "testthat_idl"))
 Be sure to replace `teamlucc_dir` with the appropriate path to the `teamlucc` 
 folder on your machine. Depending on the speed of your machine, these tests can 
 take up to several hours to run.
+
+If your IDL installation is not in `C:/Program 
+Files/Exelis/IDL83/bin/bin.x86_64/idl.exe` then you will need to specify the 
+path to idl prior to running `test_dir`. For example, on Linux you might 
+specify:
+
+```R
+idl <- "idl"
+```
